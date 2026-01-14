@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ProgressIndicator?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane prefHeight="600.0" prefWidth="800.0" styleClass="teacher-mgmt-border-pane" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.courseschedulerfx.controllers.TeacherManagementController">
+
+    <!-- Top Section with Header -->
+    <top>
+        <HBox alignment="CENTER_LEFT" spacing="15" styleClass="teacher-mgmt-header">
+            <padding>
+                <Insets bottom="15" left="30" right="30" top="15" />
+            </padding>
+            <VBox spacing="3" HBox.hgrow="ALWAYS">
+                <Label styleClass="page-title" text="👨‍🏫 Teacher Management" />
+                <Label styleClass="page-subtitle" text="Manage teachers" />
+            </VBox>
+
+            <!-- Search and Filter Bar in Header -->
+            <HBox alignment="CENTER_RIGHT" spacing="8" styleClass="header-search-bar">
+                <TextField fx:id="searchField" prefWidth="300" promptText="🔍 Search by title..." styleClass="search-field" />
+                <Button onAction="#handleRefresh" styleClass="refresh-btn" text="🔄 Refresh" />
+            </HBox>
+
+            <Button fx:id="addTeacherBtn" onAction="#handleAddTeacher" styleClass="add-btn" text="+ Add Teacher" />
+        </HBox>
+    </top>
+
+    <!-- Center Section with Dynamic Content -->
+    <center>
+        <StackPane styleClass="teacher-mgmt-main">
+            <VBox spacing="10" styleClass="teacher-mgmt-main">
+                <padding>
+                    <Insets bottom="10" left="30" right="30" top="10" />
+                </padding>
+
+                <!-- Course Table -->
+                <VBox styleClass="table-container" VBox.vgrow="ALWAYS">
+                    <TableView fx:id="teacherTable" styleClass="teacher-table" VBox.vgrow="ALWAYS">
+                        <columns>
+                            <TableColumn fx:id="teacherIDColumn" maxWidth="120" minWidth="45" prefWidth="100" text="Teacher ID" />
+                            <TableColumn fx:id="teacherNameColumn" minWidth="100" prefWidth="280" text="Teacher Name" />
+                            <TableColumn fx:id="teacherEmailColumn" maxWidth="120" minWidth="80" prefWidth="100" text="Email" />
+                            <TableColumn fx:id="departmentColumn" minWidth="120" prefWidth="175.19985961914062" text="Department Name" />
+                            <TableColumn fx:id="actionColumn" prefWidth="100.0001220703125" text="Actions" />
+                        </columns>
+                        <placeholder>
+                            <Label styleClass="table-placeholder" text="No teachers found" />
+                        </placeholder>
+                    </TableView>
+                </VBox>
+            </VBox>
+
+            <!-- Loading Indicator Overlay -->
+            <VBox fx:id="loadingOverlay" alignment="CENTER" managed="false" spacing="15" styleClass="loading-overlay" visible="false">
+                <ProgressIndicator fx:id="loadingIndicator" prefHeight="60" prefWidth="60" />
+                <Label styleClass="loading-label" text="Loading teachers..." />
+            </VBox>
+        </StackPane>
+    </center>
+
+    <!-- Bottom Section with Status Bar -->
+    <bottom>
+        <HBox alignment="CENTER_LEFT" spacing="10" styleClass="status-bar">
+            <padding>
+                <Insets bottom="8" left="30" right="30" top="8" />
+            </padding>
+            <Label fx:id="statusLabel" styleClass="status-text" text="Ready" />
+            <Region HBox.hgrow="ALWAYS" />
+            <Label fx:id="countLabel" styleClass="count-text" text="Total: 0 teachers" />
+        </HBox>
+    </bottom>
+</BorderPane>
