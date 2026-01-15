@@ -1,6 +1,7 @@
 package com.example.courseschedulerfx.controllers;
 
 import com.example.courseschedulerfx.DAO.DepartmentDAO;
+import com.example.courseschedulerfx.datastructures.Treee;
 import com.example.courseschedulerfx.model.Department;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -56,6 +57,7 @@ public class DepartmentManagementController {
 
     private ObservableList<Department> departmentList = FXCollections.observableArrayList();
     private ObservableList<Department> filteredList = FXCollections.observableArrayList();
+    private Treee departmentTree = new Treee();
 
     @FXML
     public void initialize() {
@@ -135,6 +137,11 @@ public class DepartmentManagementController {
             Platform.runLater(() -> {
                 departmentList.clear();
                 departmentList.addAll(departments);
+                // Rebuild the tree for efficient searching
+                departmentTree = new Treee();
+                for (Department dept : departments) {
+                    departmentTree.insert(dept);
+                }
                 filteredList.setAll(departmentList);
                 departmentTable.setItems(filteredList);
                 updateCount();
@@ -295,11 +302,24 @@ public class DepartmentManagementController {
     }
 
     private void filterData(String searchText) {
-        filteredList.setAll(departmentList.filtered(department -> {
-            String lowerCaseSearchText = searchText.toLowerCase();
-            return department.getDepartmentName().toLowerCase().contains(lowerCaseSearchText) ||
-                   String.valueOf(department.getDepartmentID()).contains(lowerCaseSearchText);
-        }));
+        if (searchText.trim().isEmpty()) {
+            filteredList.setAll(departmentList);
+        } else {
+            try {
+                int id = Integer.parseInt(searchText.trim());
+                Department dept = departmentTree.search(id);
+                if (dept != null) {
+                    filteredList.setAll(dept);
+                } else {
+                    filteredList.clear();
+                }
+            } catch (NumberFormatException e) {
+                // Filter by name
+                filteredList.setAll(departmentList.filtered(department ->
+                    department.getDepartmentName().toLowerCase().contains(searchText.toLowerCase())
+                ));
+            }
+        }
         updateCount();
     }
 }
