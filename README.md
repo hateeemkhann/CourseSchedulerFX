@@ -51,20 +51,12 @@ CourseSchedulerFX/
    cd CourseSchedulerFX
    ```
 
-2. **Configure Database**
-   - Update database connection settings in `src/main/java/com/example/courseschedulerfx/DAO/DBConnection.java`:
-     ```java
-     private static final String URL = "jdbc:sqlserver://localhost:1433;database=CourseSchedulerDB;...";
-     private static final String USER = "your_username";
-     private static final String PASSWORD = "your_password";
-     ```
-
-3. **Build the project with Maven**
+2. **Build the project with Maven**
    ```bash
    mvn clean compile
    ```
 
-4. **Run the application**
+3. **Run the application**
    ```bash
    mvn javafx:run
    ```
